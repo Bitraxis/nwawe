@@ -1,0 +1,94 @@
+/ Welcome to nwawe a purely functional extensible programming language
+
+(name = input<Name: >) / as you can see it is very LISP inspired, this prompts a input with a Name:  string before the actual input very Python-esque but what's with the <>?? you will see
+(print<Hello!, *name>) / will print Hello! YourName as you can see <> are actually how you interact with functions and *var is used when using a variable as everything in <> atleast in input and print is automagically asumed to be a string
+(print<"Hello! " + *name >) / this is the same but i've forced the Hello!  with a space to be a string!
+/ Why not just use LISP you ask??
+function{<a>,<b> :
+    [sum]
+    (a = input<a: >)
+    (b = input<b: >)
+    (sum = a * (b ^ 2) - b _ (a + 2) ) / a times b squared minus b divided by a + 2 _ can be also substitute by / or // (whole number dividing)
+    [\sum] / his returns the sum variable
+}
+
+(print<function'<1>,<2>'>) / this is a simplified easier to read version
+(print<function<1><2>>) / this is the same but harder to read you can see how quickly you can get confused
+(print<function
+    <1> /, a comma after this is not needed but can be used if you like it that way
+    <2>
+>) / here is a deconstructed version this also works
+
+(print<function'
+    <1>, /but when using the '' way of specifying arguments the comma is needed
+    <2>
+'>)
+
+/ This is weird any more examples??
+/ nwawe is math-first! this is a example of actually using functions in functions! sin,cos,tab,cot,log are all functions available in the base language
+
+math5{[sin<a>],[cos<b>],[tan<c>],[cot<d>],[log<e>]
+    [\a;\b;\c;\d;\e] / returns a sine from the number a. cosine from number b, tangent from number c, cotangent from d, and the logarithm of e
+}
+(print<math5
+    <23>
+    <42>
+    <50>
+    <40>
+    <10>
+>)
+
+cube{[plot<5> => grid*x* ]*6 / every side of the cube has a 5x5 grid where you can put lines to actually make a cube the grids are named grid1, grid2, ... grid6
+    (line<<grid1>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid1>;<x:0-5>,<y:5>>) / top line
+    (line<<grid1>;<x:0>,<y:0-5>>) / right line
+    (line<<grid1>;<x:5>,<y:0-5>>) / left line 
+    (area<grid1>;<auto>>)
+    => (side1);
+    / now grid1 has a basic square with an area the front side (side1)
+    / you can see the ; , this is now a code block side1 is a grid with these settings and transforms 
+    (line<<grid2>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid2>;<x:0-5>,<y:5>>) / top line
+    (line<<grid2>;<x:0>,<y:0-5>>) / right line
+    (line<<grid2>;<x:5>,<y:0-5>>) / left line 
+    (area<<grid2>;<auto>>)
+    (angle<<grid2<45 *- *grid1 >>>) / grid2 has an angle of 45 degrees compared to grid 1
+    => (side2);
+    / grid2 has the right side of our cube
+    (line<<grid3>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid3>;<x:0-5>,<y:5>>) / top line
+    (line<<grid3>;<x:0>,<y:0-5>>) / right line
+    (line<<grid3>;<x:5>,<y:0-5>>) / left line 
+    (area<grid3>;<auto>>)
+    => (side3);
+    (grid-position<<higher<<angle-of<grid2 + grid4> - 45><grid1 + 5>>>)
+    / grid3 is now the backside of our cube it is also compromising the angle of grid2 so it appears connected
+    (line<<grid4>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid4>;<x:0-5>,<y:5>>) / top line
+    (line<<grid4>;<x:0>,<y:0-5>>) / right line
+    (line<<grid4>;<x:5>,<y:0-5>>) / left line 
+    (area<grid4>;<auto>>)
+    (angle<<grid4<-45 *- *grid1 >>>)
+    => (side4);
+    / grid 4 is the left side of our cube
+    (line<<grid5>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid5>;<x:0-5>,<y:5>>) / top line
+    (line<<grid5>;<x:0>,<y:0-5>>) / right line
+    (line<<grid5>;<x:5>,<y:0-5>>) / left line
+    (area<grid5>;<auto>>)
+    (grid-position<<under<grid1,grid2,grid3,grid4><sides-connected-to<line1>>>>) 
+    => (side5);
+    // our bottom side of the cube you can see the lines are also variables with numbers the first line our bottom line is line1!!
+    (line<<grid6>;<x:0-5>,<y:0>>) / bottom line
+    (line<<grid6>;<x:0-5>,<y:5>>) / top line
+    (line<<grid6>;<x:0>,<y:0-5>>) / right line
+    (line<<grid6>;<x:5>,<y:0-5>>) / left line
+    (area<grid6>;<auto>>)
+    (grid-position<<over<grid1,grid2,grid3,grid4><sides-connected-to<line2>>>>)
+    => (side6);
+    // our top side!!
+    (transform-grids<[inherit-connections+and-append-connections]:side1,side2,side3,side4,side5,side6>)
+    / our cube!
+}
+
+(show(render<[cube]:<type: cubical>:<line-color: black>:<area-color: tinted-blue>>)) / our cube beatifully rendered with black lines and blue area colors in a window!

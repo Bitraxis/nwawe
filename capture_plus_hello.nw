@@ -1,0 +1,7 @@
+f{<a>,<b> :
+    (<a + b / 2>)
+    => (sum)
+    [\sum]
+}
+(print<Hello!, World>)
+print<f<5><2>>
